@@ -1,0 +1,258 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD obj\startup.o
+LOAD obj\utils.o
+LOAD obj\hardware.o
+LOAD obj\kernel.o
+LOAD obj\klib.o
+LOAD obj\exp.o
+LOAD obj\irq.o
+LOAD obj\console.o
+LOAD obj\memory.o
+LOAD obj\heap.o
+LOAD obj\cpu.o
+LOAD obj\rtc.o
+LOAD obj\keyboard.o
+LOAD obj\mouse.o
+LOAD obj\object.o
+LOAD obj\acpi.o
+LOAD obj\apic.o
+LOAD obj\pci.o
+LOAD obj\sys.o
+LOAD obj\floppy.o
+LOAD obj\sch.o
+
+.text           0x00009000     0x4bb0
+ *(.text)
+ .text          0x00009000      0x38c obj\startup.o
+                0x00009000                EntryPoint
+                0x0000935c                _KPTR_PointerTableStart
+                0x00009362                KPTR_GDT_Length
+                0x00009364                KPTR_GDT
+                0x00009378                KPTR_KernelTSS
+ *fill*         0x0000938c        0x4 00
+ .text          0x00009390       0x70 obj\utils.o
+                0x00009390                _STOP_PROCESSOR
+                0x00009392                _HALT_PROCESSOR
+                0x00009394                _DISABLE_INTERRUPTS
+                0x00009396                _ENABLE_INTERRUPTS
+                0x00009398                _INVALIDATE_PAGE
+                0x000093a2                _MEMCPY
+                0x000093c3                _MEMCLR
+                0x000093e2                _SPINLOCK_WAIT
+                0x000093f3                _SPINLOCK_SIGNAL
+ .text          0x00009400      0x1d9 obj\hardware.o
+                0x00009400                _INPORT_BYTE
+                0x0000940c                _OUTPORT_BYTE
+                0x0000941a                _INPORT_WORD
+                0x00009427                _OUTPORT_WORD
+                0x00009436                _INPORT_DWORD
+                0x00009442                _OUTPORT_DWORD
+                0x00009450                _CPUID_AVAIL
+                0x00009468                _EXEC_CPUID
+                0x00009491                _READ_MSR
+                0x000094ac                _WRITE_MSR
+                0x000094c1                _ENABLE_IRQ
+                0x000094dd                _DISABLE_IRQ
+                0x000094fc                _IDLE_LOOP
+                0x00009517                _CALL_TSS
+                0x00009532                _ADD_TASK
+                0x00009583                _END_OF_INT
+                0x00009590                _CLEAR_BUSY_BIT
+                0x000095a9                _SET_BUSY_BIT
+                0x000095c2                _SET_SCHEDULER_BACKLINK
+ *fill*         0x000095d9        0x7 00
+ .text          0x000095e0      0x430 obj\kernel.o
+                0x00009757                _StandardDeviceSearch
+                0x00009940                _StartupProcess_EntryPoint
+                0x00009983                _kernel_main
+ .text          0x00009a10      0x2d0 obj\klib.o
+                0x00009a10                _strcpy
+                0x00009a34                _strcmp
+                0x00009a80                _strlen
+                0x00009aa3                _memcpy
+                0x00009ac4                _memclr
+                0x00009ade                _memcmp
+                0x00009b32                _kprintf
+ .text          0x00009ce0      0x460 obj\exp.o
+                0x00009d0c                _exp_DumpGDT
+                0x00009e2b                _exp_DumpKernelTable
+                0x00009f60                _exp_GPFHandler
+                0x00009f95                _exp_PageFaultHandler
+                0x00009fdd                _exp_DefaultHandler
+                0x0000a060                _exp_InvalidOpCodeHandler
+                0x0000a0e9                _exp_InvalidTaskHandler
+ .text          0x0000a140      0x1a0 obj\irq.o
+                0x0000a140                _irq_InitDevice
+                0x0000a17b                _irq_RegisterIRQHandler
+                0x0000a1d4                _irq_UnregisterIRQHandler
+                0x0000a284                _irq_GenericIRQHandler
+ .text          0x0000a2e0      0x750 obj\console.o
+                0x0000a2e0                _con_InitDevice
+                0x0000a78f                _con_WriteString
+                0x0000a7dc                _con_WriteChar
+                0x0000a813                _con_StreamWriteHexDigit
+                0x0000a86a                _con_WriteBYTE
+                0x0000a8a8                _con_WriteWORD
+                0x0000a918                _con_WriteDWORD
+                0x0000a979                _con_WriteDWORD_Dec
+ .text          0x0000aa30      0x5d0 obj\memory.o
+                0x0000abd8                _mem_InvalidatePage
+                0x0000adac                _mem_AllocPage
+                0x0000aff1                _mem_InitDevice
+ .text          0x0000b000      0x2e0 obj\heap.o
+                0x0000b000                _heap_InitDevice
+                0x0000b033                _heap_ExtendHeapPages
+                0x0000b08d                _heap_ExtendHeap
+                0x0000b0d5                _heap_Free
+                0x0000b0f5                _heap_Alloc
+                0x0000b1f8                _kmalloc_simple
+                0x0000b27d                _kmalloc
+                0x0000b29e                _kmalloc_aligned
+                0x0000b2be                _kfree
+ .text          0x0000b2e0      0x680 obj\cpu.o
+                0x0000b495                _cpu_InitDevice
+ .text          0x0000b960      0x1f0 obj\rtc.o
+                0x0000b960                _rtc_DisableNMI
+                0x0000b97c                _rtc_EnabledNMI
+                0x0000b998                _rtc_ReadCMOS
+                0x0000b9f1                _rtc_WriteCMOS
+                0x0000ba53                _rtc_IRQHandler
+                0x0000bace                _rtc_InitDevice
+                0x0000bb2a                _rtc_GetGlobalTickCount
+                0x0000bb34                _rtc_SetGlobalTickCount
+ .text          0x0000bb50      0x230 obj\keyboard.o
+                0x0000bb50                _key_GetNumCharsInBuffer
+                0x0000bbb9                _key_GetCharFromBuffer
+                0x0000bc07                _key_PutCharInBuffer
+                0x0000bc3f                _getc
+                0x0000bc5a                _key_IRQHandler
+                0x0000bd30                _key_InitDevice
+ .text          0x0000bd80      0x580 obj\mouse.o
+                0x0000bd80                _SendKeyboardCommandWithData
+                0x0000bdc8                _SendKeyboardCommandWithResult
+                0x0000be01                _SendMouseCommand
+                0x0000be5d                _SendMouseCommandWithData
+                0x0000be8b                _SendMouseCommandWithResult
+                0x0000beb7                _mse_IRQHandler
+                0x0000c0f5                _mse_InitDevice
+ .text          0x0000c300      0x1c0 obj\object.o
+                0x0000c300                _obj_GetObjectFromHandle
+                0x0000c3e0                _obj_CreateHandle
+                0x0000c415                _obj_ReleaseHandle
+                0x0000c45f                _obj_CreateEvent
+ .text          0x0000c4c0      0x210 obj\acpi.o
+                0x0000c61d                _acpi_InitDevice
+ .text          0x0000c6d0       0xd0 obj\apic.o
+                0x0000c6d0                _apic_SpuriousIRQHandler
+                0x0000c6d5                _apic_TimerIRQHandler
+                0x0000c6ea                _apic_InitDevice
+                0x0000c75a                _apic_ReadIoApic
+                0x0000c77b                _apic_WriteIoApic
+ .text          0x0000c7a0      0xda0 obj\pci.o
+                0x0000c849                _pci_WriteConfigWORD
+                0x0000c8fa                _pci_ReadConfigWORD
+                0x0000ca84                _pci_DeviceScan
+ .text          0x0000d540       0x40 obj\sys.o
+                0x0000d558                _sys_SystemCallHandler
+ .text          0x0000d580       0x50 obj\floppy.o
+                0x0000d59d                _flp_InitDevice
+ .text          0x0000d5d0      0x5e0 obj\sch.o
+                0x0000d618                _sch_DumpThreadList
+                0x0000d716                _IdleProcess_EntryPoint
+                0x0000d74e                _sch_AddTaskToProcessList
+                0x0000d80f                _sch_CreateKernelThread
+                0x0000d95c                _sch_InitScheduler
+                0x0000da62                _sch_ScheduleInterrupt
+                0x0000db98                _sch_MainLoop
+
+.data           0x0000dbb0      0x120
+ *(.data)
+ .data          0x0000dbb0        0x0 obj\kernel.o
+ .data          0x0000dbb0        0x0 obj\klib.o
+ .data          0x0000dbb0        0x0 obj\exp.o
+ .data          0x0000dbb0        0x0 obj\irq.o
+ .data          0x0000dbb0        0x0 obj\console.o
+ .data          0x0000dbb0       0x10 obj\memory.o
+ .data          0x0000dbc0       0x10 obj\heap.o
+ .data          0x0000dbd0        0x0 obj\cpu.o
+ .data          0x0000dbd0        0x0 obj\rtc.o
+ .data          0x0000dbd0       0xc0 obj\keyboard.o
+ .data          0x0000dc90       0x20 obj\mouse.o
+ .data          0x0000dcb0       0x10 obj\object.o
+ .data          0x0000dcc0        0x0 obj\acpi.o
+ .data          0x0000dcc0        0x0 obj\apic.o
+ .data          0x0000dcc0        0x0 obj\pci.o
+ .data          0x0000dcc0        0x0 obj\sys.o
+ .data          0x0000dcc0        0x0 obj\floppy.o
+ .data          0x0000dcc0       0x10 obj\sch.o
+                0x0000dcd0                _bss_start = .
+
+.bss            0x0000dcd0      0x25c
+ *(.bss)
+ .bss           0x0000dcd0        0x0 obj\kernel.o
+ .bss           0x0000dcd0        0x0 obj\klib.o
+ .bss           0x0000dcd0        0x0 obj\exp.o
+ .bss           0x0000dcd0       0x40 obj\irq.o
+ .bss           0x0000dd10       0xa0 obj\console.o
+ .bss           0x0000ddb0       0x14 obj\memory.o
+ .bss           0x0000ddc4        0x4 obj\heap.o
+ .bss           0x0000ddc8        0x0 obj\cpu.o
+ .bss           0x0000ddc8        0x4 obj\rtc.o
+ .bss           0x0000ddcc      0x120 obj\keyboard.o
+ .bss           0x0000deec       0x1c obj\mouse.o
+ .bss           0x0000df08        0x8 obj\object.o
+ .bss           0x0000df10        0x4 obj\acpi.o
+ .bss           0x0000df14        0x4 obj\apic.o
+ .bss           0x0000df18        0x0 obj\pci.o
+ .bss           0x0000df18        0x0 obj\sys.o
+ .bss           0x0000df18        0x0 obj\floppy.o
+ .bss           0x0000df18       0x14 obj\sch.o
+                0x0000df2c                _bss_end = .
+OUTPUT(obj\kernel.bin binary)
+
+.comment        0x00000000      0x168
+ .comment       0x00000000       0x14 obj\kernel.o
+ .comment       0x00000014       0x14 obj\klib.o
+ .comment       0x00000028       0x14 obj\exp.o
+ .comment       0x0000003c       0x14 obj\irq.o
+ .comment       0x00000050       0x14 obj\console.o
+ .comment       0x00000064       0x14 obj\memory.o
+ .comment       0x00000078       0x14 obj\heap.o
+ .comment       0x0000008c       0x14 obj\cpu.o
+ .comment       0x000000a0       0x14 obj\rtc.o
+ .comment       0x000000b4       0x14 obj\keyboard.o
+ .comment       0x000000c8       0x14 obj\mouse.o
+ .comment       0x000000dc       0x14 obj\object.o
+ .comment       0x000000f0       0x14 obj\acpi.o
+ .comment       0x00000104       0x14 obj\apic.o
+ .comment       0x00000118       0x14 obj\pci.o
+ .comment       0x0000012c       0x14 obj\sys.o
+ .comment       0x00000140       0x14 obj\floppy.o
+ .comment       0x00000154       0x14 obj\sch.o
+
+.eh_frame       0x0000df2c     0x10d8
+ .eh_frame      0x0000df2c       0x78 obj\kernel.o
+ .eh_frame      0x0000dfa4       0xf8 obj\klib.o
+ .eh_frame      0x0000e09c      0x110 obj\exp.o
+ .eh_frame      0x0000e1ac       0x98 obj\irq.o
+ .eh_frame      0x0000e244      0x240 obj\console.o
+ .eh_frame      0x0000e484      0x1b4 obj\memory.o
+ .eh_frame      0x0000e638      0x138 obj\heap.o
+ .eh_frame      0x0000e770       0x60 obj\cpu.o
+ .eh_frame      0x0000e7d0      0x118 obj\rtc.o
+ .eh_frame      0x0000e8e8       0xd8 obj\keyboard.o
+ .eh_frame      0x0000e9c0      0x140 obj\mouse.o
+ .eh_frame      0x0000eb00       0xd8 obj\object.o
+ .eh_frame      0x0000ebd8       0x78 obj\acpi.o
+ .eh_frame      0x0000ec50       0xb8 obj\apic.o
+ .eh_frame      0x0000ed08      0x14c obj\pci.o
+ .eh_frame      0x0000ee54       0x38 obj\sys.o
+ .eh_frame      0x0000ee8c       0x38 obj\floppy.o
+ .eh_frame      0x0000eec4      0x140 obj\sch.o
